@@ -1,5 +1,6 @@
 import os
 import json
+from dotenv import find_dotenv, load_dotenv, dotenv_values
 
 import streamlit as st
 from groq import Groq
@@ -12,10 +13,15 @@ st.set_page_config(
     layout="centered"
 )
 
-working_dir = os.path.dirname(os.path.abspath(__file__))
-config_data = json.load(open(f"{working_dir}/config.json"))
 
-GROQ_API_KEY = config_data["GROQ_API_KEY"]
+# Explicitly specify the directory to search for the .env file
+dotenv_path = find_dotenv('.env', raise_error_if_not_found=True, usecwd=True)
+
+#dotenv_path = find_dotenv()
+
+load_dotenv(dotenv_path)
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # save the api key to environment variable
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
